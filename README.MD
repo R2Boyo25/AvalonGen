@@ -1,0 +1,1 @@
+Package generator for [https://github.com/R2Boyo25/AvalonPackageManager](Avalon Package Manager)
