@@ -1,1 +1,4 @@
-Package generator for [https://github.com/R2Boyo25/AvalonPackageManager](Avalon Package Manager)
+Package generator for [Avalon Package Manager](https://github.com/R2Boyo25/AvalonPackageManager)
+
+# Current supported languages
+- Python
