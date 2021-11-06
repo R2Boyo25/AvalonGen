@@ -1,1 +1,1 @@
-pip3 remove |pkgname|
+pip3 uninstall |pkgname|
