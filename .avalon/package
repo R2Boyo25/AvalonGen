@@ -1,0 +1,8 @@
+{
+    "mvBinAfterInstallScript": true,
+    "installScript": "gen.py",
+    "binname": "avalongen",
+    "toCopy": [
+        "all"
+    ]
+}
