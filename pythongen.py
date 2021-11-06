@@ -81,7 +81,7 @@ def libPythonGenerator(arguments):
 
         with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libin.sh", 'r') as installtemplate:
             with open(".avalon/install.sh", 'w') as install:
-                install.write(gentemplate.read())
+                install.write(installtemplate.read())
         
         with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libun.sh", 'r') as uninstalltemplate:
             with open(".avalon/uninstall.sh", 'w') as uninstall:
