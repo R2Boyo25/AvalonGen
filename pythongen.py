@@ -49,3 +49,53 @@ def pythonGenerator(arguments):
         with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/gen.py", 'r') as gentemplate:
             with open("gen.py", 'w') as gen:
                 gen.write(gentemplate.read().replace('|runfile|', filepath))
+
+def libPythonGenerator(arguments):
+    pkgName = input('Package name (defined in setup.py):\n')
+
+    deptypes = input("Dependency types (ex: apt, avalon, pip (please use requirements.txt if possible for pip)) (separated by spaces) (blank for none):\n").replace(",", "").split()
+
+    dependencies = {}
+
+    for deptype in deptypes:
+        dependencies[deptype] = input(f"Dependencies for {deptype} (separated by spaces):\n").replace(",", "").split()
+    
+    fpack = {
+        "installScript": '.avalon/install.sh',
+        "uninstallScript": '.avalon/uninstall.sh',
+        "deps": dependencies
+    } if dependencies != {} else {
+        "installScript": '.avalon/install.sh',
+        "uninstallScript": '.avalon/uninstall.sh'
+    }
+
+    if os.path.exists('.avalon'):
+        shutil.rmtree('.avalon')
+
+    if not '--noavalon' in arguments:
+
+        os.mkdir('.avalon')
+
+        with open('.avalon/package', 'w') as packagefile:
+            packagefile.write(json.dumps(fpack, indent = 4))
+
+        with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libin.sh", 'r') as installtemplate:
+            with open(".avalon/install.sh", 'w') as install:
+                install.write(gentemplate.read())
+        
+        with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libun.sh", 'r') as uninstalltemplate:
+            with open(".avalon/uninstall.sh", 'w') as uninstall:
+                uninstall.write(uninstalltemplate.read().replace('|pkgname|', pkgName))
+
+    else:
+
+        with open('package', 'w') as packagefile:
+            packagefile.write(json.dumps(fpack, indent = 4))
+
+        with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libin.sh", 'r') as installtemplate:
+            with open("install.sh", 'w') as install:
+                install.write(installtemplate.read())
+
+        with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libun.sh", 'r') as uninstalltemplate:
+            with open("uninstall.sh", 'w') as uninstall:
+                uninstall.write(uninstalltemplate.read().replace('|pkgname|', pkgName))

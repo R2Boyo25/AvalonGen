@@ -1,8 +1,9 @@
 import sys
-from pythongen import pythonGenerator
+from pythongen import pythonGenerator, libPythonGenerator
 
 generators = {
-    'py': pythonGenerator
+    'py': pythonGenerator,
+    'libpy': libPythonGenerator
 }
 
 if len(sys.argv) > 1:
