@@ -19,11 +19,13 @@ def pythonGenerator(arguments):
     fpack = {
         "binname": binname,
         "installScript": '.avalon/gen.py',
+        "mvBinAfterInstallScript": True,
         "deps": dependencies,
         "toCopy": filestocopy
     } if dependencies != {} else {
         "binname": binname,
         "installScript": '.avalon/gen.py',
+        "mvBinAfterInstallScript": True,
         "toCopy": filestocopy
     }
 
