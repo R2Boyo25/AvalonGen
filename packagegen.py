@@ -43,7 +43,7 @@ def apmGenerator(arguments):
     if os.path.exists(f"{tmpdir}/{tmpdir}"):
         os.rmdir(f"{tmpdir}/{tmpdir}")
 
-    os.system(f"tar -czf {name.lower()}.{repo.lower()}.apm {tmpdir}")
+    os.system(f"tar -czf {name.lower()}.{repo.lower()}.apm {tmpdir}/.")
 
     shutil.rmtree("agentmp")
     
