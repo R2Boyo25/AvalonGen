@@ -23,5 +23,6 @@ if len(sys.argv) > 1:
 
 else:
 
-    print("Please supply a language (python, etc.).")
+    print("Please supply a language:")
+    print("\t" + "\n\t".join(generators))
     quit()
