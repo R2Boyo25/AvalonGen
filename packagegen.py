@@ -13,8 +13,23 @@ def apmGenerator(arguments):
         print("Cannot be run from inside of the repository")
         quit()
 
-    name = input("Your name / Organization's name (NO SPACES OR SPECIAL CHARACTERS)(if there is a github repo use the owner of that repo's username): ")
-    repo = input("Program Name (NO SPACES OR SPECIAL CHARACTERS)(If there is a github repo use it's name): ")
+    if not os.path.exists(f"{dir}/.avalon"):
+        print(".avalon directory missing")
+        quit()
+
+    if not os.path.exists(f"{dir}/.avalon/package"):
+        print(".avalon/package file is missing")
+        quit()
+
+    package = json.load(open(f"{dir}/.avalon/package", 'r'))
+
+    if "author" not in package:
+        name = input("Your name / Organization's name (NO SPACES OR SPECIAL CHARACTERS)(if there is a github repo use the owner of that repo's username): ")
+        package["author"] = name
+
+    if "repo" not in package:
+        repo = input("Program Name (NO SPACES OR SPECIAL CHARACTERS)(If there is a github repo use it's name): ")
+        package["repo"] = repo
 
     if os.path.exists("agentmp"):
         shutil.rmtree("agentmp")
@@ -25,17 +40,7 @@ def apmGenerator(arguments):
 
     os.system(f"cp -a {dir}/. {tmpdir}")
 
-    if not os.path.exists(f"{dir}/.avalon"):
-        print(".avalon directory missing")
-        quit()
-    if not os.path.exists(f"{dir}/.avalon/package"):
-        print(".avalon/package file is missing")
-        quit()
-
-    package = json.load(open(f"{dir}/.avalon/package", 'r'))
-
-    package["author"] = name
-    package["repo"] = repo
+    
 
     with open(f'{tmpdir}/.avalon/package', 'w') as packagefile:
         packagefile.write(json.dumps(package, indent = 4))
