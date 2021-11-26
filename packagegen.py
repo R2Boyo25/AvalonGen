@@ -34,7 +34,7 @@ def apmGenerator(arguments):
 
     package = json.load(open(f"{dir}/.avalon/package", 'r'))
 
-    package["user"] = name
+    package["author"] = name
     package["repo"] = repo
 
     with open(f'{tmpdir}/.avalon/package', 'w') as packagefile:
@@ -43,7 +43,7 @@ def apmGenerator(arguments):
     if os.path.exists(f"{tmpdir}/{tmpdir}"):
         os.rmdir(f"{tmpdir}/{tmpdir}")
 
-    os.system(f"tar -czf {name.lower()}.{repo.lower()}.apm {tmpdir}/.")
+    os.system(f"tar -czf {name.lower()}.{repo.lower()}.apm -C {tmpdir} .")
 
     shutil.rmtree("agentmp")
     

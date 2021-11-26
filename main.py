@@ -9,6 +9,8 @@ generators = {
     "package": apmGenerator
 }
 
+print("AvalonGen v1.1")
+
 if len(sys.argv) > 1:
 
     for generatorprefix in generators:
