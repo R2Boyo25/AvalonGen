@@ -1,9 +1,12 @@
 import sys
 from pythongen import pythonGenerator, libPythonGenerator
+from packagegen import apmGenerator
 
 generators = {
     'py': pythonGenerator,
-    'libpy': libPythonGenerator
+    'libpy': libPythonGenerator,
+    "apm": apmGenerator,
+    "package": apmGenerator
 }
 
 if len(sys.argv) > 1:
