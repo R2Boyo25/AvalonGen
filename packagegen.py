@@ -26,10 +26,14 @@ def apmGenerator(arguments):
     if "author" not in package:
         name = input("Your name / Organization's name (NO SPACES OR SPECIAL CHARACTERS)(if there is a github repo use the owner of that repo's username): ")
         package["author"] = name
+    else:
+        name = package["author"]
 
     if "repo" not in package:
         repo = input("Program Name (NO SPACES OR SPECIAL CHARACTERS)(If there is a github repo use it's name): ")
         package["repo"] = repo
+    else:
+        repo = package["repo"]
 
     if os.path.exists("agentmp"):
         shutil.rmtree("agentmp")
