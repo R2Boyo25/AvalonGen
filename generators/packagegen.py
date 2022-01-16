@@ -3,6 +3,8 @@ import json
 import shutil
 
 def apmGenerator(arguments):
+    "Generate .apm file"
+
     if len(arguments) == 1:
         dir = arguments[0]
     else:
@@ -56,3 +58,5 @@ def apmGenerator(arguments):
 
     shutil.rmtree("agentmp")
     
+def load(plugins):
+    plugins.add(apmGenerator, 'package')

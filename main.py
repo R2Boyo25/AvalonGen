@@ -1,30 +1,8 @@
-import sys
-from pythongen import pythonGenerator, libPythonGenerator
-from packagegen import apmGenerator
+from CLIParse import Parse
+import loader
 
-generators = {
-    'py': pythonGenerator,
-    'libpy': libPythonGenerator,
-    "apm": apmGenerator,
-    "package": apmGenerator
-}
+p = Parse("apm gen", "Avalon Generator V1.2 Copyright (C) R2Boyo25 2022")
 
-print("AvalonGen v1.1")
+loader.Loader(p)
 
-if len(sys.argv) > 1:
-
-    for generatorprefix in generators:
-        if sys.argv[1].lower().startswith(generatorprefix):
-            print("---------------------------")
-            generators[generatorprefix](sys.argv[2:])
-            print("---------------------------")
-            quit()
-
-    else:
-        print(f'Language {sys.argv[1]} not found.')
-
-else:
-
-    print("Please supply a language:")
-    print("\t" + "\n\t".join(generators))
-    quit()
+p.run()
