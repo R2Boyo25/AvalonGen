@@ -1,4 +1,6 @@
 {
+	"author": "R2Boyo25",
+	"repo": "AvalonGen",
     "mvBinAfterInstallScript": true,
     "installScript": ".avalon/gen.py",
     "binname": "avalongen",

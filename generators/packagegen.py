@@ -2,7 +2,7 @@ import os
 import json
 import shutil
 
-def apmGenerator(arguments):
+def apmGenerator(flags, *arguments):
     "Generate .apm file"
 
     if len(arguments) == 1:
