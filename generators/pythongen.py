@@ -1,6 +1,6 @@
 import os, json, shutil
 
-def pythonGenerator(arguments):
+def pythonGenerator(flags, *arguments):
     "Generate Python program package"
 
     print("Paths that are asked for are relative to the repository root.")
@@ -42,7 +42,7 @@ def pythonGenerator(arguments):
     if os.path.exists('.avalon'):
         shutil.rmtree('.avalon')
 
-    if not '--noavalon' in arguments:
+    if not flags.noavalon:
 
         prefix = '.avalon/'
 
@@ -55,12 +55,16 @@ def pythonGenerator(arguments):
     with open(f'{prefix}package', 'w') as packagefile:
         packagefile.write(json.dumps(fpack, indent = 4))
 
-    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/gen.py", 'r') as gentemplate:
+    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/../templates/gen.py", 'r') as gentemplate:
         with open(f"{prefix}gen.py", 'w') as gen:
             gen.write(gentemplate.read().replace('|runfile|', filepath))
 
-def libPythonGenerator(arguments):
+def libPythonGenerator(flags, *arguments):
     "Generate Python library package"
+
+    name = input("Your name / Organization's name (NO SPACES OR SPECIAL CHARACTERS)(if there is a github repo use the owner of that repo's username): ")
+
+    repo = input("Program Name (NO SPACES OR SPECIAL CHARACTERS)(If there is a github repo use it's name): ")
 
     pkgName = input('Package name (defined in setup.py):\n')
 
@@ -72,10 +76,14 @@ def libPythonGenerator(arguments):
         dependencies[deptype] = input(f"Dependencies for {deptype} (separated by spaces):\n").replace(",", "").split()
     
     fpack = {
+        "author": name,
+        "repo": repo,
         "installScript": '.avalon/install.sh',
         "uninstallScript": '.avalon/uninstall.sh',
         "deps": dependencies
     } if dependencies != {} else {
+        "author": name,
+        "repo": repo,
         "installScript": '.avalon/install.sh',
         "uninstallScript": '.avalon/uninstall.sh'
     }
@@ -83,7 +91,7 @@ def libPythonGenerator(arguments):
     if os.path.exists('.avalon'):
         shutil.rmtree('.avalon')
 
-    if not '--noavalon' in arguments:
+    if not flags.noavalon:
 
         prefix = '.avalon/'
 
@@ -96,18 +104,23 @@ def libPythonGenerator(arguments):
     with open(f'{prefix}package', 'w') as packagefile:
         packagefile.write(json.dumps(fpack, indent = 4))
 
-    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libin.sh", 'r') as installtemplate:
+    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/../templates/libin.sh", 'r') as installtemplate:
         with open(f'{prefix}install.sh', 'w') as install:
             install.write(installtemplate.read())
     
-    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libun.sh", 'r') as uninstalltemplate:
+    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/../templates/libun.sh", 'r') as uninstalltemplate:
         with open(f'{prefix}uninstall.sh', 'w') as uninstall:
             uninstall.write(uninstalltemplate.read().replace('|pkgname|', pkgName))
 
-def pythonLibraryTemplateGenerator(arguments):
+def pythonLibraryTemplateGenerator(flags, *arguments):
     "Generate Python library package"
 
-    pkgName = input('Package name (defined in setup.py):\n')
+    name = input("Your name / Organization's name (NO SPACES OR SPECIAL CHARACTERS)(if there is a github repo use the owner of that repo's username): ")
+
+    repo = input("Program Name (NO SPACES OR SPECIAL CHARACTERS)(If there is a github repo use it's name): ")
+
+    pkgName = input('Import name:\n')
+    description = input('Library Description:\n')
 
     deptypes = input("Dependency types (ex: apt, avalon, pip (please use requirements.txt if possible for pip)) (separated by spaces) (blank for none):\n").replace(",", "").split()
 
@@ -117,18 +130,25 @@ def pythonLibraryTemplateGenerator(arguments):
         dependencies[deptype] = input(f"Dependencies for {deptype} (separated by spaces):\n").replace(",", "").split()
     
     fpack = {
+        "author": name,
+        "repo": repo,
         "installScript": '.avalon/install.sh',
         "uninstallScript": '.avalon/uninstall.sh',
         "deps": dependencies
     } if dependencies != {} else {
+        "author": name,
+        "repo": repo,
         "installScript": '.avalon/install.sh',
         "uninstallScript": '.avalon/uninstall.sh'
     }
 
+    os.mkdir(pkgName)
+    os.chdir(pkgName)
+
     if os.path.exists('.avalon'):
         shutil.rmtree('.avalon')
 
-    if not '--noavalon' in arguments:
+    if not flags.noavalon:
 
         prefix = '.avalon/'
 
@@ -141,13 +161,30 @@ def pythonLibraryTemplateGenerator(arguments):
     with open(f'{prefix}package', 'w') as packagefile:
         packagefile.write(json.dumps(fpack, indent = 4))
 
-    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libin.sh", 'r') as installtemplate:
+    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/../templates/libin.sh", 'r') as installtemplate:
         with open(f'{prefix}install.sh', 'w') as install:
             install.write(installtemplate.read())
     
-    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/templates/libun.sh", 'r') as uninstalltemplate:
+    with open(f"/{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/../templates/libun.sh", 'r') as uninstalltemplate:
         with open(f'{prefix}uninstall.sh', 'w') as uninstall:
             uninstall.write(uninstalltemplate.read().replace('|pkgname|', pkgName))
+
+    os.mkdir(pkgName)
+    os.system(f"touch \"{pkgName}\"/__init__.py")
+    os.system(f"touch requirements.txt")
+
+    with open("setup.py", "w") as setuppy:
+        setuppy.write(f"""from setuptools import find_packages, setup\n\nsetup(
+    name='{pkgName}',
+    packages=find_packages(include=['{pkgName}']),
+    version='1.0',
+    description='{description}',
+    author='{name}'
+)""")
+    
+    with open(".gitignore", "w") as gitignore:
+        gitignore.write("*.egg-info\nbuild\ndist\n__pycache__")
+
 
 def load(plugins):
     plugins.add(pythonGenerator, 'py')
