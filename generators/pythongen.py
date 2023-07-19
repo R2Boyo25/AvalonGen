@@ -1,7 +1,8 @@
 import os, json, shutil
+import CLIParse  # type: ignore
 
 
-def pythonGenerator(flags, *arguments):
+def pythonGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
     "Generate Python program package"
 
     print("Paths that are asked for are relative to the repository root.")
@@ -61,18 +62,15 @@ def pythonGenerator(flags, *arguments):
         }
     )
 
-    if os.path.exists(".avalon"):
-        shutil.rmtree(".avalon")
-
-    if not flags.noavalon:
-
-        prefix = ".avalon/"
-
-        os.mkdir(prefix)
+    if flags.noavalon:
+        prefix = ""
 
     else:
+        if os.path.exists(".avalon"):
+            shutil.rmtree(".avalon")
 
-        prefix = ""
+        prefix = ".avalon/"
+        os.mkdir(prefix)
 
     with open(f"{prefix}package", "w") as packagefile:
         packagefile.write(json.dumps(fpack, indent=4))
@@ -85,7 +83,7 @@ def pythonGenerator(flags, *arguments):
             gen.write(gentemplate.read().replace("|runfile|", filepath))
 
 
-def libPythonGenerator(flags, *arguments):
+def libPythonGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
     "Generate Python library package"
 
     name = input(
@@ -159,6 +157,6 @@ def libPythonGenerator(flags, *arguments):
             uninstall.write(uninstalltemplate.read().replace("|pkgname|", pkgName))
 
 
-def load(plugins):
+def load(plugins: CLIParse.Parse) -> None:
     plugins.add(pythonGenerator, "py")
     plugins.add(libPythonGenerator, "libpy")

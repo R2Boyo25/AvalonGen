@@ -2,9 +2,10 @@ import os
 import json
 import shutil
 import tempfile
+import CLIParse  # type: ignore
 
 
-def apmGenerator(flags, *arguments):
+def apmGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
     "Generate .apm file"
 
     if len(arguments) < 1:
@@ -60,5 +61,5 @@ def apmGenerator(flags, *arguments):
         os.chdir(tmpdir)
 
 
-def load(plugins):
+def load(plugins: CLIParse.Parse) -> None:
     plugins.add(apmGenerator, "package")
