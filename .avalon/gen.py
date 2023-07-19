@@ -1,7 +1,16 @@
-import sys
+import sys, os
 
-binf = sys.argv[1]
 filesFolder = sys.argv[2]
+binf = "avalongen"
 
-with open(binf, "w") as f:
-    f.write(f'#!/bin/bash\npython3 "{filesFolder}/main.py" "$@"')
+if not os.path.exists("bin"):
+    os.mkdir("bin")
+
+with open(f"bin/{binf}", "w") as f:
+    f.write(
+        f"""#!/bin/bash
+
+PYTHONPATH="$PYTHONPATH:{filesFolder}:{filesFolder}/../avalonpackagemanager/" python3 -m avalongen "$@"
+"""
+    )
+    os.system(f"chmod +x bin/{binf}")

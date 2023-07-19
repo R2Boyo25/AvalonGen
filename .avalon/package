@@ -4,6 +4,7 @@
     "mvBinAfterInstallScript": true,
     "installScript": ".avalon/gen.py",
     "binname": "avalongen",
+    "binfile": "bin/avalongen",
     "toCopy": [
         "all"
     ]

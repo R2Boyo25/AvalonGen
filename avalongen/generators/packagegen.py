@@ -56,7 +56,7 @@ def apmGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
         cwd = os.getcwd()
         os.chdir(tmpdir)
 
-        os.system(f"tar -czf {cwd}/{name.lower()}.{repo.lower()}.apm *")
+        os.system(f"tar -czf {cwd}/{name.lower()}.{repo.lower()}.apm $(find -printf \"%P\n\")")
 
         os.chdir(tmpdir)
 
