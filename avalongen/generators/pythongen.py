@@ -1,8 +1,8 @@
 import os, json, shutil
-import CLIParse  # type: ignore
+import kazparse
 
 
-def pythonGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
+def pythonGenerator(flags: kazparse.flags.Flags, *arguments: str) -> None:
     "Generate Python program package"
 
     print("Paths that are asked for are relative to the repository root.")
@@ -83,7 +83,7 @@ def pythonGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
             gen.write(gentemplate.read().replace("|runfile|", filepath))
 
 
-def libPythonGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
+def libPythonGenerator(flags: kazparse.flags.Flags, *arguments: str) -> None:
     "Generate Python library package"
 
     name = input(
@@ -157,6 +157,6 @@ def libPythonGenerator(flags: CLIParse.flags.Flags, *arguments: str) -> None:
             uninstall.write(uninstalltemplate.read().replace("|pkgname|", pkgName))
 
 
-def load(plugins: CLIParse.Parse) -> None:
+def load(plugins: kazparse.loader.Loader) -> None:
     plugins.add(pythonGenerator, "py")
     plugins.add(libPythonGenerator, "libpy")

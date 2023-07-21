@@ -1,4 +1,4 @@
-from CLIParse import Parse  # type: ignore
+from kazparse import Parse
 
 
 p = Parse("apm gen", "Avalon Generator V0.1.3 Copyright (C) R2Boyo25 2023")
